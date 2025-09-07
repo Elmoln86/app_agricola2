@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Modelo 2 - Frontend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root { font-family: system-ui, Arial, sans-serif; }
+      body { margin: 24px; }
+      .row { display:flex; gap:8px; align-items:center; margin-bottom: 12px; flex-wrap: wrap; }
+      button { padding: 8px 12px; cursor: pointer; }
+      input { padding: 8px; min-width: 220px; }
+      .card {
+        display: grid; gap: 8px;
+        padding: 16px; border: 1px solid #ddd; border-radius: 12px;
+        max-width: 560px; background: #fafafa;
+      }
+      .title { font-size: 20px; font-weight: 600; }
+      .muted { color:#666 }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+      .kv { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 10px; }
+      .json { background:#111; color:#eee; padding:12px; border-radius:10px; overflow:auto; max-height: 40vh; }
+      .hidden { display:none; }
+      img.icon { width: 64px; height: 64px; image-rendering: -webkit-optimize-contrast; }
+    </style>
+  </head>
+  <body>
+    <h1>Frontend ✅</h1>
+
+    <div class="row">
+      <button id="btnHealth">Testar /health</button>
+      <small class="muted">(Backend: <code id="apiBase"></code>)</small>
+    </div>
+
+    <div class="row">
+      <input id="city" placeholder="Cidade (ex: Recife)" value="Recife" />
+      <button id="btnWeather">/weather?city=...</button>
+      <button id="btnToggleRaw">ver JSON</button>
+    </div>
+
+    <div id="card" class="card">
+      <div class="title">Clima</div>
+      <div class="muted">Preencha a cidade e clique em <b>/weather?city=...</b></div>
+    </div>
+
+    <div id="raw" class="json hidden">—</div>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
+

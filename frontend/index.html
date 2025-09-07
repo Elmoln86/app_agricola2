@@ -1,0 +1,49 @@
+﻿<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Modelo 2 - Frontend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root{--bg:#0b1220;--panel:#111827;--text:#e5e7eb;--muted:#9ca3af;--ok:#10b981;--btn:#1f2937}
+      body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,Segoe UI,Arial}
+      header{padding:18px 22px;border-bottom:1px solid #111}
+      h1{margin:0;font-size:18px}
+      main{max-width:900px;margin:22px auto;padding:0 16px}
+      .row{display:flex;gap:8px;align-items:center;margin:12px 0;flex-wrap:wrap}
+      input,button{border:0;border-radius:10px;padding:10px 12px}
+      input{background:#0f172a;color:var(--text);min-width:220px}
+      button{background:var(--btn);color:var(--text);cursor:pointer}
+      .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#0f172a;color:var(--muted);font-size:12px}
+      .muted{color:var(--muted)}
+      .card{background:var(--panel);border:1px solid #0f172a;border-radius:16px;padding:14px}
+      .title{font-weight:600;margin-bottom:6px}
+      pre{margin:0;white-space:pre-wrap;word-break:break-word;background:#0a0f1f;padding:12px;border-radius:12px;border:1px solid #0f172a;max-height:55vh;overflow:auto}
+      .hidden{display:none}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Frontend ✅ <span class="pill">API: <code id="apiBase"></code></span></h1>
+    </header>
+    <main>
+      <div class="row">
+        <button id="btnHealth">Testar /health</button>
+        <input id="city" placeholder="Cidade (ex: Recife)" value="Recife" />
+        <button id="btnWeather">/weather?city=...</button>
+        <button id="btnToggleRaw">Mostrar/ocultar JSON</button>
+      </div>
+
+      <div id="card" class="card">
+        <div class="title">Aguardando ação…</div>
+        <div class="muted">Clique em um botão acima.</div>
+      </div>
+
+      <h3>Resposta:</h3>
+      <pre id="raw">—</pre>
+    </main>
+
+    <!-- IMPORTANTE: usa o main.js, não main.jsx -->
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
