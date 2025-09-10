@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api_routes import router as weather_router  # sua rota jÃ¡ existente (clima)
 from app.stripe_routes import router as billing_router
 from app.webhooks import router as webhook_router
-from app.webhooks import router as webhook_router
+
 
 app.include_router(webhook_router)
 
@@ -29,5 +29,6 @@ async def health():
 app.include_router(weather_router)  # se nÃ£o quiser pÃºblica, adicione Depends no arquivo api_routes.py
 app.include_router(billing_router, prefix='/api/billing', tags=['billing'])
 app.include_router(webhook_router, prefix='/api/webhooks', tags=['webhooks'])
+
 
 
