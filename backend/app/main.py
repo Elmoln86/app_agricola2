@@ -8,10 +8,15 @@ app = FastAPI(title='Modelo2 Backend')
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],   # em prod idealmente: ['https://app.terravivaia.com.br']
-    allow_methods=['*'],
-    allow_headers=['*'],
+    allow_origins=[
+        "https://SEU-APP-VERCEL.vercel.app",
+        "https://app.terravivaia.com.br",
+        "http://localhost:5173",
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
 
 @app.get('/health')
 async def health():
@@ -20,3 +25,4 @@ async def health():
 app.include_router(weather_router)  # se nÃ£o quiser pÃºblica, adicione Depends no arquivo api_routes.py
 app.include_router(billing_router, prefix='/api/billing', tags=['billing'])
 app.include_router(webhook_router, prefix='/api/webhooks', tags=['webhooks'])
+
