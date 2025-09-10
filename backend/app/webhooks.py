@@ -1,37 +1,41 @@
-﻿import os
-import stripe
 from fastapi import APIRouter, Request, HTTPException
+import stripe
+import os
 
 router = APIRouter()
 
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+# Defina a secret do webhook do Stripe (configure no Render também)
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
+stripe.api_key = STRIPE_API_KEY
 
-@router.post("/stripe")
-async def stripe_webhook(req: Request):
-    payload = await req.body()
-    sig = req.headers.get("stripe-signature")
-
-    if not WEBHOOK_SECRET:
-        raise HTTPException(status_code=500, detail="STRIPE_WEBHOOK_SECRET nÃ£o configurado")
+@router.post("/api/webhooks/stripe")
+async def stripe_webhook(request: Request):
+    payload = await request.body()
+    sig_header = request.headers.get("stripe-signature")
 
     try:
         event = stripe.Webhook.construct_event(
-            payload=payload, sig_header=sig, secret=WEBHOOK_SECRET
+            payload, sig_header, STRIPE_WEBHOOK_SECRET
         )
-    except stripe.error.SignatureVerificationError as e:
-        raise HTTPException(status_code=400, detail=f"Assinatura invÃ¡lida: {e}")
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Payload invÃ¡lido: {e}")
+        raise HTTPException(status_code=400, detail=f"Webhook error: {str(e)}")
 
+    # 👇 Aqui você trata os eventos que vêm do Stripe
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-        print("âœ… checkout.session.completed",
-              session.get("metadata", {}).get("supabase_user_id"),
-              session.get("subscription"))
-    elif event["type"] == "customer.subscription.updated":
-        print("â„¹ï¸ subscription.updated")
-    elif event["type"] == "customer.subscription.deleted":
-        print("â„¹ï¸ subscription.deleted")
+        print(f"Pagamento concluído: {session['id']}")
 
-    return {"received": True}
+    elif event["type"] == "customer.subscription.updated":
+        subscription = event["data"]["object"]
+        print(f"Assinatura atualizada: {subscription['id']}")
+
+    elif event["type"] == "customer.subscription.deleted":
+        subscription = event["data"]["object"]
+        print(f"Assinatura cancelada: {subscription['id']}")
+
+    elif event["type"] == "invoice.payment_failed":
+        invoice = event["data"]["object"]
+        print(f"Falha no pagamento: {invoice['id']}")
+
+    return {"status": "success"}
